@@ -2,6 +2,7 @@ export LANG=ja_JP.UTF-8
 zstyle ':completion:*:default' menu select=1
 autoload -U compinit
 setopt auto_cd
+setopt auto_pushd
 setopt extended_glob
 setopt auto_remove_slash
 setopt pushd_ignore_dups
