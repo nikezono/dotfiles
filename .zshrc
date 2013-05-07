@@ -3,8 +3,10 @@ zstyle ':completion:*:default' menu select=1
 autoload -U compinit
 setopt auto_cd
 setopt auto_pushd
+setopt correct
 setopt extended_glob
 setopt auto_remove_slash
+setopt nolistbeep
 setopt pushd_ignore_dups
 RPROMPT="[%~]"
 compinit
