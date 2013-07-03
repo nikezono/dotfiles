@@ -1,206 +1,240 @@
-export LANG=ja_JP.UTF-8
-zstyle ':completion:*:default' menu select=1
+#
+# History and Completeion
+#
 autoload -U compinit
-setopt auto_cd
-setopt auto_pushd
-setopt correct
-setopt extended_glob
-setopt auto_remove_slash
-setopt nolistbeep
-setopt pushd_ignore_dups
-RPROMPT="[%~]"
-compinit
+compinit -u
+autoload -Uz colors ; colors
+autoload -Uz history-search-end
 
-HISTFILE=$HOME/.zsh-history 
-HISTSIZE=100000 
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+HISTFILE=${HOME}/.zsh-history
+HISTSIZE=10000000
 SAVEHIST=100000
-setopt extended_history 
-function history-all { history -E 1 }
 
-typeset -A myabbrev
-myabbrev=(
-    "ll"    "| less"
-    "lg"    "| grep"
-)
-
-#abbrev
-setopt share_history
-
-if [ "$TERM" = "screen" ]; then
-	chpwd () { echo -n "_`dirs`\\" }
-	preexec() {
-		emulate -L zsh
-		local -a cmd; cmd=(${(z)2})
-		case $cmd[1] in
-			fg)
-				if (( $#cmd == 1 )); then
-					cmd=(builtin jobs -l %+)
-				else
-					cmd=(builtin jobs -l $cmd[2])
-				fi
-				;;
-			%*) 
-				cmd=(builtin jobs -l $cmd[1])
-				;;
-			cd)
-				if (( $#cmd == 2)); then
-					cmd[1]=$cmd[2]
-				fi
-				;&
-			    *)
-	echo -n "k$cmd[1]:t\\"
-	return
-	;;
-	esac
-
-	local -A jt; jt=(${(kv)jobtexts})
-
-	$cmd >>(read num rest
-		cmd=(${(z)${(e):-\$jt$num}})
-		echo -n "k$cmd[1]:t\\") 2>/dev/null
-	}
-	chpwd
+if [[ ! -z `compaudit` ]]; then
+  compaudit | xargs chmod g-w
 fi
 
-my-expand-abbrev() {
-    local left prefix
-    left=$(echo -nE "$LBUFFER" | sed -e "s/[_a-zA-Z0-9]*$//")
-    prefix=$(echo -nE "$LBUFFER" | sed -e "s/.*[^_a-zA-Z0-9]\([_a-zA-Z0-9]*\)$/\1/")
-    LBUFFER=$left${myabbrev[$prefix]:-$prefix}" "
-}
-zle -N my-expand-abbrev
-bindkey     " "         my-expand-abbrev
+bindkey -v
+bindkey -a 'q' push-line
+bindkey -a 'h' run-help
+bindkey "" history-incremental-search-backward
+bindkey "" history-incremental-search-forward
+bindkey "[3~" delete-char
 
-#wideterm
-precmd() {
-    hostnam=${HOST##.*}     # wildcard, not regex!
-    usernam=$(whoami)
-    newPWD=${PWD}
-    #   アクセサリをつけていく
-    promptstr="--(${usernam}@${hostnam})-<mm/dd-hh:mm>---(${PWD})--"
-    fillsize=$(( ${COLUMNS} - ${#promptstr} ))      # プロンプト幅を計算
-    if [ $fillsize -ge 0 ]
-    then
-        fill=${(l.${fillsize}..-.)}
-    else
-        fill=""
-        offset=$(( (${fillsize}*(-1)) + 4 ))
-        newPWD="..."${newPWD[${offset},-1]}
-    fi
-}
+zstyle ':completion:*' use-cache true
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %P Lines: %m
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
+zstyle ':completion:*:approximate:*' max-errors 1
+zstyle ':completion:*:corrections' format $'%{\e[0;31m%}%d (errors: %e)%}'
+zstyle ':completion:*:default' menu select auto
+zstyle ':completion:*:descriptions' format '%B%d%b'
+zstyle ':completion:*:expand:*' tag-order all-expansions
+zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
+zstyle ':completion:*:history-words' stop yes
+zstyle ':completion:*:history-words' remove-all-dups yes
+zstyle ':completion:*:history-words' list false
+zstyle ':completion:*:history-words' menu yes
+zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:match:*' original only
+zstyle ':completion:*:messages' format '%d'
+zstyle ':completion:*:warnings' format 'No matches for: %d'
+zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
+zstyle ':completion::*:(-command-|export):*' fake-parameters ${${${_comps[(I)-value-*]#*,}%%,*}:#-*-}
+zstyle ':completion:::::' completer _complete _approximate
 
-termwide() {
+autoload -U zmv
+alias zmv='noglob zmv'
+autoload -U zfinit
+zmodload zsh/complist
+zmodload zsh/zftp
 
-    local GRAY=$'%{\e[1;30m%}'
-    local LIGHT_GRAY=$'%{\e[0;37m%}'
-    local WHITE=$'%{\e[1;37m%}'
-
-    local LIGHT_BLUE=$'%{\e[1;36m%}'
-    local YELLOW=$'%{\e[1;33m%}'
-    local PURPLE=$'%{\e[1;35m%}'
-    local GREEN=$'%{\e[1;32m%}'
-    local BLUE=$'%{\e[1;34m%}'
-
-    PROMPT=$YELLOW"-"$BLUE"-("$YELLOW"\${usernam}"$LIGHT_BLUE"@"$YELLOW"\${hostnam}"\
-$BLUE")-<"$YELLOW"%D{%m}"$LIGHT_BLUE"/$YELLOW%D{%d}"$BLUE"-"\
-$PURPLE"%D{%H}"$LIGHT_BLUE":"$PURPLE"%D{%M}"$BLUE">-"\
-$YELLOW"-\${fill}"$BLUE"-("$YELLOW"\${newPWD}"$BLUE")-"$YELLOW"-"\
-$'\n'\
-$YELLOW"-"$BLUE"-["\
-$YELLOW"%h"\
-$BLUE"]"$WHITE"%#"\
-$'%{\e[0m%} '
-
-PROMPT2=$LIGHT_BLUE"-"$YELLOW"-"$YELLOW"-"$LIGHT_GRAY$'%{\e[0m%} '
-}
-
-
-case "${OSTYPE}" in
-    freebsd*|darwin*)
-        alias ls="ls -G -w"
-        ;;
-    linux*)
-        alias ls="ls --color"
-        ;;
-esac
-
-alias la="ls -a"
-alias lf="ls -F"
-alias ll="ls -l"
-alias du="du -h"
-alias df="df -h"
-
-
-## terminal configuration
-autoload -U colors
-colors
-PROMPT="%{$fg[green]%}%#%{$reset_color%} "
-
-precmd () {
-    PROMPT="%{%(?.$fg[green].$fg[red])%}%U$USER@%m%%%u%{$reset_color%} "
-}
-
-#unset LSCOLORS
-case "${TERM}" in
-    xterm)
-        export TERM=xterm-color
-        export LSCOLORS=gxfxcxdxbxegedabagacad
-        ;;
-    kterm)
-        export TERM=kterm-color
-    # set BackSpace control character
-        stty erase
-        ;;
-    cons25)
-        unset LANG
-        export LSCOLORS=GxFxCxdxBxegedabagacad
-        export LS_COLORS='di=01;34:ln=01;35:so=01;32:ex=01;31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
-        zstyle ':completion:*' list-colors \
-            'di=;34;1' 'ln=;35;1' 'so=;32;1' 'ex=31;1' 'bd=46;34' 'cd=43;34'
-        ;;
-esac
-
-# set terminal title including current directory
-#
-case "${TERM}" in
-    kterm*|xterm*)
-        precmd() {
-            echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
-        }
-        export LSCOLORS=gxfxcxdxbxegedabagacad
-        export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
-        zstyle ':completion:*' list-colors \
-            'di=34' 'ln=35' 'so=32' 'ex=31' 'bd=46;34' 'cd=43;34'
-        ;;
-esac
 
 
 #
-# Show branch name in Zsh's right prompt
+# Configuration
 #
-autoload -Uz VCS_INFO_get_data_git; VCS_INFO_get_data_git 2> /dev/null
-function rprompt-git-current-branch {
-    local name st color gitdir action
-    if [[ "$PWD" =~ '/\.git(/.*)?$' ]]; then
-        return
-    fi
-    name=$(basename "`git symbolic-ref HEAD 2> /dev/null`")
-    if [[ -z $name ]]; then
-        return
-    fi
-    gitdir=`git rev-parse --git-dir 2> /dev/null`
-    action=`VCS_INFO_git_getaction "$gitdir"` && action="($action)"
-    st=`git status 2> /dev/null`
-    if [[ -n `echo "$st" | grep "^nothing to"` ]]; then
-        color=%F{green}
-    elif [[ -n `echo "$st" | grep "^nothing added"` ]]; then
-        color=%F{yellow}
-    elif [[ -n `echo "$st" | grep "^# Untracked"` ]]; then
-        color=%B%F{red}
-    else
-        color=%F{red}
-    fi
-    echo "$color$name$action%f%b "
-}
+limit coredumpsize 102400
 setopt prompt_subst
-RPROMPT='[`rprompt-git-current-branch`%~]'
+setopt nobeep
+setopt long_list_jobs
+setopt list_types
+setopt auto_resume
+setopt auto_list
+setopt hist_ignore_dups
+setopt autopushd
+setopt pushd_ignore_dups
+setopt extended_glob
+setopt auto_menu
+setopt extended_history
+setopt equals
+setopt magic_equal_subst
+setopt hist_verify
+setopt numeric_glob_sort
+setopt print_eight_bit
+setopt share_history
+setopt auto_cd
+setopt auto_param_keys
+setopt auto_param_slash
+setopt correct
+setopt noautoremoveslash
+setopt complete_aliases
+setopt glob_complete
+
+
+#
+# Prompt
+#
+case ${UID} in
+  0)
+    zstyle ':completion:*' command-path $HOME/bin /usr/local/sbin /usr/local/bin /usr/X11/bin /usr/sbin /usr/bin /sbin /bin
+    PROMPT="%{${fg[magenta]}%}%n@%m%{${reset_color}%} %{${fg[blue]}%}#%{${reset_color}%} "
+    ;;
+  *)
+    zstyle ':completion:*' command-path $HOME/bin /usr/local/bin /usr/X11/bin /usr/bin /bin $PATH
+    zstyle ':completion:*:sudo:*' command-path $HOME/bin /usr/local/sbin /usr/local/bin /usr/X11/bin /usr/sbin /usr/bin /sbin /bin
+    case ${OSTYPE} in
+      darwin*)
+        PROMPT="%{${fg[cyan]}%}%n@%m%{${reset_color}%} %{${fg[blue]}%}$%{${reset_color}%} "
+        ;;
+      linux*)
+        case ${HOST} in
+          p*)
+            PROMPT="%{${fg[green]}%}%n@%m%{${reset_color}%} %{${fg[blue]}%}$%{${reset_color}%} "
+            ;;
+          *)
+            PROMPT="%{${fg[yellow]}%}%n@%m%{${reset_color}%} %{${fg[blue]}%}$%{${reset_color}%} "
+            ;;
+        esac
+        ;;
+    esac
+    ;;
+esac
+PROMPT2="%B%{${fg[magenta]}%}%_#%{${reset_color}%}%b "
+SPROMPT="%B%{${fg[magenta]}%}%r is correct? [n,y,a,e] :%{${reset_color}%}%b "
+
+case "${TERM}" in
+  kterm*|xterm)
+    precmd() {
+      echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
+    }
+    ;;
+esac
+
+
+#
+# Aliases and Functions
+#
+alias ls="ls -vF --color"
+alias dir="dir --color"
+alias cp="cp -iv"
+alias mv="mv -iv"
+alias rm="rm -v"
+alias c="cd"
+alias v="vi"
+alias l="ls"
+alias q="exit"
+alias la="ls -A"
+alias ll="ls -l"
+alias lla="ls -lA"
+alias ss="sudo su"
+alias ce="crontab -e"
+alias cv="convmv -f utf-8 --nfd -t utf-8 --nfc -r ."
+alias twitter="tw -st"
+alias twit="yes|tw $1 2>&1 > /dev/null"
+function chkey() {
+  if [ -z $1 ]; then
+    tmux set-option prefix C-a
+    tmux bind C-a last-window
+    tmux bind a last-window
+  else
+    tmux set-option prefix C-$1
+    tmux bind C-$1 last-window
+    tmux bind $1 last-window
+  fi
+}
+[[ ! -s `which tailf` ]] && alias tailf="tail -f"
+[[ -s `which htop` ]] && alias top="htop"
+[[ -s `which hub` ]] && alias git="hub"
+function socks() {
+  PORT=$1
+  HOST=$2
+  ssh -N -f -c 3des -D localhost:$PORT $HOST
+}
+function search() {
+  DIR=$1
+  KEY=$2
+  [[ ! -d $1 && ! -f $1 && $1 != '.' ]] && KEY=$DIR && DIR='.'
+  grep --color -n -r -i "$KEY" "$DIR"
+}
+function count() {
+  echo $(( `ls -l | wc -l`-1 )) `du -sh`
+}
+function psx() {
+  ps aux | grep $1 | grep -v grep
+}
+preexec () {
+  #echo ">> which ${1%% *} 2 > /dev/null"
+  #echo ">> `which ${1%% *} 2 > /dev/null`"
+  cmd=${1%% *}
+  if [ -z "`whence ${cmd}`" ]; then
+    if [ $cmd = 'yabai' ]; then
+      arg=${1##* }
+      echo "$arg is YABAI"
+      kill -s INT $PPID
+    fi
+  fi
+}
+
+#
+# Git Prompt
+#
+__git_files() { _files }
+autoload -Uz add-zsh-hook
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git svn hg bzr
+zstyle ':vcs_info:*' formats '(%s)-[%b]'
+zstyle ':vcs_info:*' actionformats '(%s)-[%b|%a]'
+zstyle ':vcs_info:(svn|bzr):*' branchformat '%b:r%r'
+zstyle ':vcs_info:bzr:*' use-simple true
+autoload -Uz is-at-least
+if is-at-least 4.3.10; then
+  zstyle ':vcs_info:git:*' check-for-changes true
+  zstyle ':vcs_info:git:*' stagedstr "^"
+  zstyle ':vcs_info:git:*' unstagedstr "*"
+  zstyle ':vcs_info:git:*' formats '[%s](%b) %c%u'
+  zstyle ':vcs_info:git:*' actionformats '[%s](%b|%a) %c%u'
+fi
+function _update_vcs_info_msg() {
+  psvar=()
+  LANG=en_US.UTF-8 vcs_info
+  [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+}
+add-zsh-hook precmd _update_vcs_info_msg
+RPROMPT="%1(v|%F{green}%1v%f|)"
+RPROMPT="$RPROMPT %{${fg[blue]}%}[%/]%{${reset_color}%}"
+
+if [ ! -z "`which tmux`" ]; then
+  if [ $SHLVL = 1 ]; then
+    if [ $(( `ps aux | grep tmux | grep $USER | grep -v grep | wc -l` )) != 0 ]; then
+      echo -n 'Attach tmux session? [Y/n]'
+      read YN
+      [[ $YN = '' ]] && YN=y
+      [[ $YN = y ]] && tmux attach
+    fi
+  fi
+fi
+
+if [[ "$TMUX" != "" ]] then
+  alias pbcopy="ssh 127.0.0.1 pbcopy"
+  alias pbpaste="ssh 127.0.0.1 pbpaste"
+fi
+
