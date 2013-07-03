@@ -1,2 +1,0 @@
-#!/bin/sh
-curl -d "message=$1" http://shookai.org/say/say

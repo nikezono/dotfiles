@@ -1,2 +1,0 @@
-#!/bin/sh
-ffmpeg -i $1 -sameq -acodec libfaac -vcodec libx264 -vpre default -ac 2 $3 $2
