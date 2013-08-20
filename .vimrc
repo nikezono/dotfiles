@@ -60,6 +60,8 @@ set wildmode=list:full     " リスト表示，最長マッチ
 set history=1000           " コマンド・検索パターンの履歴数
 set complete+=k            " 補完に辞書ファイル追加
 
+
+
 cnoremap <C-p> <Up>
 cnoremap <Up>  <C-p>
 cnoremap <C-n> <Down>
@@ -70,6 +72,7 @@ let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_min_syntax_length = 3
+let g:quickrun_config = {'*': {'hook/time/enable': '1'},}
 
 imap <C-k> <Plug>(neocomplcache_snippets_expand)
 smap <C-k> <Plug>(neocomplcache_snippets_expand)
@@ -229,3 +232,7 @@ autocmd BufWritePre * :%s/\s\+$//ge
 " Auto Commands
 "
 autocmd FileType quickrun AnsiEsc
+autocmd BufWrite *.rb  :QuickRun
+autocmd BufWrite *.js  :QuickRun
+autocmd BufWrite *.coffee :QuickRun
+
