@@ -12,6 +12,15 @@ HISTFILE=${HOME}/.zsh-history
 HISTSIZE=10000000
 SAVEHIST=100000
 
+compdef mosh=ssh
+
+export PATH=/usr/local/Cellar/ruby/2.0.0-p195/bin:$PATH
+
+. `brew --prefix`/etc/profile.d/z.sh
+function precmd () {
+   z --add "$(pwd -P)"
+}
+
 if [[ ! -z `compaudit` ]]; then
   compaudit | xargs chmod g-w
 fi

@@ -38,6 +38,14 @@ NeoBundle 'scrooloose/syntastic'
 NeoBundle 'vim-stylus'
 NeoBundle 'digitaltoad/vim-jade'
 NeoBundle 'nathanaelkane/vim-indent-guides'
+NeoBundle 'Shougo/vimproc', {
+  \ 'build' : {
+    \ 'windows' : 'make -f make_mingw32.mak',
+    \ 'cygwin' : 'make -f make_cygwin.mak',
+    \ 'mac' : 'make -f make_mac.mak',
+    \ 'unix' : 'make -f make_unix.mak',
+  \ },
+  \ }
 
 filetype plugin indent on
 
@@ -46,6 +54,8 @@ if neobundle#exists_not_installed_bundles()
         \ string(neobundle#get_not_installed_bundle_names())
   echomsg 'Please execute ":NeoBundleInstall" command.'
 endif
+
+
 
 " vimにcoffeeファイルタイプを認識させる
 au BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
@@ -80,6 +90,8 @@ let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_min_syntax_length = 3
 let g:quickrun_config = {'*': {'hook/time/enable': '1'},}
+let g:quickrun_config._ = {'runner' : 'vimproc'}
+
 
 imap <C-k> <Plug>(neocomplcache_snippets_expand)
 smap <C-k> <Plug>(neocomplcache_snippets_expand)
