@@ -251,9 +251,6 @@ autocmd BufWritePre * :%s/\s\+$//ge
 " Auto Commands
 "
 autocmd FileType quickrun AnsiEsc
-autocmd BufWrite *.rb  :QuickRun
-autocmd BufWrite *.js  :QuickRun
-autocmd BufWrite *.coffee :QuickRun
 
 
 "------------------------------------
