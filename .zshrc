@@ -15,6 +15,7 @@ SAVEHIST=100000
 compdef mosh=ssh
 
 export PATH=/usr/local/Cellar/ruby/2.0.0-p195/bin:$PATH
+export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
 
 . `brew --prefix`/etc/profile.d/z.sh
 function precmd () {

@@ -2,8 +2,17 @@
 	name = nikezono
 	email = nikezono@gmail.com
 [color]
-	ui = auto
+  ui = auto
+  branch = auto
+  status = auto
+  diff = auto
+  grep = auto
+[push]
+  default = tracking
 [alias]
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  rm-all = add -u
+  cam = commit -a --amend
+
 [core]
 	editor = vim
