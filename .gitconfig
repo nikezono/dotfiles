@@ -16,3 +16,4 @@
 
 [core]
 	editor = vim
+  excludesfile = ~/.gitignore_global  # globalな.gitignoreの指定
