@@ -20,10 +20,15 @@ endif
 " Program
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'AnsiEsc.vim'
+
 " Utility
 NeoBundle 'Lokaltog/vim-powerline'
 NeoBundle 'banyan/recognize_charcode.vim'
 NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'mhinz/vim-startify'
+
 " Syntax
 NeoBundle 'haml.zip'
 NeoBundle 'JavaScript-syntax'
@@ -38,6 +43,8 @@ NeoBundle 'scrooloose/syntastic'
 NeoBundle 'vim-stylus'
 NeoBundle 'digitaltoad/vim-jade'
 NeoBundle 'nathanaelkane/vim-indent-guides'
+
+" VimProc
 NeoBundle 'Shougo/vimproc', {
   \ 'build' : {
     \ 'windows' : 'make -f make_mingw32.mak',
@@ -55,7 +62,25 @@ if neobundle#exists_not_installed_bundles()
   echomsg 'Please execute ":NeoBundleInstall" command.'
 endif
 
+"
+" Startifyの設定"
+"
 
+" 並び順
+let g:startify_list_order = [
+            \ ['   My last recently opened files'],
+            \ 'files',
+            \ ['   These are my bookmarks:'],
+            \ 'bookmarks',
+            \ ]
+<
+" startifyのヘッダー部分に表示する文字列を設定する(dateコマンドを実行して日付を設定している)
+let g:startify_custom_header =
+  \ map(split(system('date'), '\n'), '"   ". v:val') + ['','']
+" よく使うファイルをブックマークとして登録しておく
+let g:startify_bookmarks = [
+  \ '~/.vimrc'
+\ ]
 
 " vimにcoffeeファイルタイプを認識させる
 au BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
@@ -78,23 +103,31 @@ set history=1000           " コマンド・検索パターンの履歴数
 set complete+=k            " 補完に辞書ファイル追加
 
 
-
 cnoremap <C-p> <Up>
 cnoremap <Up>  <C-p>
 cnoremap <C-n> <Down>
 cnoremap <Down>  <C-n>
 
+
+" neocomplcache
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_min_syntax_length = 3
+
+" quickrun
 let g:quickrun_config = {'*': {'hook/time/enable': '1'},}
 let g:quickrun_config._ = {'runner' : 'vimproc'}
 
+" neosnippet
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+imap <expr><TAB> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
-imap <C-k> <Plug>(neocomplcache_snippets_expand)
-smap <C-k> <Plug>(neocomplcache_snippets_expand)
+
+" neocomplcache util
 inoremap <expr><C-g>     neocomplcache#undo_completion()
 inoremap <expr><C-l>     neocomplcache#complete_common_string()
 
@@ -240,7 +273,6 @@ let g:indent_guides_auto_colors = 0
 let g:indent_guides_start_level = 3
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=darkgrey
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=grey
-
 
 "
 " Remove trail
