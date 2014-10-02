@@ -1,6 +1,8 @@
 [user]
 	name = nikezono
 	email = nikezono@gmail.com
+[github]
+  user = nikezono
 [color]
   ui = auto
   branch = auto
@@ -14,7 +16,7 @@
   cam = commit -a --amend
   pom = pull origin master
   ls  = ls-files -v
-
+  today = "!sh -c 'git log --reverse --no-merges --branches=* --date=local --since=midnight --oneline --author=\"`git config --get user.name`\"'"
 
 [core]
 	editor = vim

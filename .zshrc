@@ -268,3 +268,6 @@ if [[ "$TMUX" != "" ]] then
   alias pbpaste="ssh 127.0.0.1 pbpaste"
 fi
 
+# Tmux branch
+PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
+
