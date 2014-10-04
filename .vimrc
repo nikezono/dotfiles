@@ -47,6 +47,8 @@ NeoBundle 'scrooloose/syntastic'
 NeoBundle 'vim-stylus'
 NeoBundle 'digitaltoad/vim-jade'
 NeoBundle 'nathanaelkane/vim-indent-guides'
+NeoBundle 'chriskempson/vim-tomorrow-theme'
+NeoBundle 'w0ng/vim-hybrid'
 
 " VimProc
 NeoBundle 'Shougo/vimproc', {
@@ -291,7 +293,6 @@ set virtualedit=block
 set backspace=indent,eol,start
 set t_kD=[3~
 set list
-set listchars=tab:›\ ,eol:\ ,trail:~
 if has('syntax')
   augroup InsertHook
     autocmd!
@@ -300,7 +301,7 @@ if has('syntax')
   augroup END
 endif
 
-
+autocmd BufNewFile,BufRead *.json set ft=javascript
 "
 " Status highlight
 "
@@ -356,7 +357,7 @@ let java_highlight_all=1
 let java_highlight_functions="style"
 let java_allow_cpp_keywords=1
 set background=dark
-colorscheme smyck
+colorscheme hybrid
 function! ActivateInvisibleIndicator()
   hi SpecialKey cterm=NONE ctermfg=darkgray guifg=darkgray
   hi ZenkakuSpace cterm=underline ctermfg=red gui=underline guifg=#FF0000
