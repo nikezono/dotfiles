@@ -6,7 +6,7 @@ Mac dotfiles
 
 ----
 
-[[tmux]](http://tmux.sourceforge.net/)使う場合は、以下を導入しないと動かない
+[tmux](http://tmux.sourceforge.net/)を使う場合は、以下も導入すること
 
 ### tmux-powerline
 
