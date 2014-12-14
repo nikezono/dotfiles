@@ -267,3 +267,5 @@ fi
 # Tmux branch
 PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
 
+# Fortune
+fortune | cowsay -f $(ls /usr/local/Cellar/cowsay/3.03/share/cows | shuf -n1)

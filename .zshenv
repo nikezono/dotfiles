@@ -22,6 +22,10 @@ export FPATH PATH
 [[ -s `which virtualenvwrapper.sh` ]] && source `which virtualenvwrapper.sh`
 [[ -s /usr/local/share/python/virtualenvwrapper.sh ]] && source /usr/local/share/python/virtualenvwrapper.sh
 
+if which brew > /dev/null; then
+  source $(brew --prefix)/etc/profile.d/z.sh
+fi
+
 LISTMAX=0
 CLICOLOR=1
 LSCOLORS=exfxbxdxcxhegedabagahcdx
