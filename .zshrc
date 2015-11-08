@@ -22,6 +22,7 @@ if [[ ! -z `compaudit` ]]; then
   compaudit | xargs chmod g-w
 fi
 
+bindkey -e
 bindkey -v
 bindkey -a 'q' push-line
 bindkey -a 'h' run-help
@@ -62,7 +63,6 @@ alias zmv='noglob zmv'
 autoload -U zfinit
 zmodload zsh/complist
 zmodload zsh/zftp
-
 
 
 #
@@ -139,8 +139,8 @@ esac
 #
 # Aliases and Functions
 #
-alias ls="ls -vF --color"
-alias dir="dir --color"
+eval "$(gdircolors ~/.dircolors-solarized)"
+alias ls='gls -vF --color=auto'
 alias cp="cp -iv"
 alias mv="mv -iv"
 alias rm="rm -v"
@@ -150,23 +150,7 @@ alias l="ls"
 alias q="exit"
 alias la="ls -A"
 alias ll="ls -l"
-alias lla="ls -lA"
-alias ss="sudo su"
-alias ce="crontab -e"
-alias cv="convmv -f utf-8 --nfd -t utf-8 --nfc -r ."
-alias twitter="tw -st"
-alias twit="yes|tw $1 2>&1 > /dev/null"
-function chkey() {
-  if [ -z $1 ]; then
-    tmux set-option prefix C-a
-    tmux bind C-a last-window
-    tmux bind a last-window
-  else
-    tmux set-option prefix C-$1
-    tmux bind C-$1 last-window
-    tmux bind $1 last-window
-  fi
-}
+
 [[ ! -s `which tailf` ]] && alias tailf="tail -f"
 [[ -s `which htop` ]] && alias top="htop"
 [[ -s `which hub` ]] && alias git="hub"
@@ -175,30 +159,6 @@ function socks() {
   HOST=$2
   ssh -N -f -c 3des -D localhost:$PORT $HOST
 }
-function search() {
-  DIR=$1
-  KEY=$2
-  [[ ! -d $1 && ! -f $1 && $1 != '.' ]] && KEY=$DIR && DIR='.'
-  grep --color -n -r -i "$KEY" "$DIR"
-}
-function count() {
-  echo $(( `ls -l | wc -l`-1 )) `du -sh`
-}
-function psx() {
-  ps aux | grep $1 | grep -v grep
-}
-preexec () {
-  #echo ">> which ${1%% *} 2 > /dev/null"
-  #echo ">> `which ${1%% *} 2 > /dev/null`"
-  cmd=${1%% *}
-  if [ -z "`whence ${cmd}`" ]; then
-    if [ $cmd = 'yabai' ]; then
-      arg=${1##* }
-      echo "$arg is YABAI"
-      kill -s INT $PPID
-    fi
-  fi
-}
 
 function do_enter() {
     if [ -n "$BUFFER" ]; then
@@ -206,8 +166,7 @@ function do_enter() {
         return 0
     fi
     echo
-    ls
-    # ↓おすすめ
+    ls -vF --color=auto
     # ls_abbrev
     if [ "$(git rev-parse --is-inside-work-tree 2> /dev/null)" = 'true' ]; then
         echo
@@ -251,7 +210,7 @@ RPROMPT="$RPROMPT %{${fg[blue]}%}[%/]%{${reset_color}%}"
 if [ ! -z "`which tmux`" ]; then
   if [ $SHLVL = 1 ]; then
     if [ $(( `ps aux | grep tmux | grep $USER | grep -v grep | wc -l` )) != 0 ]; then
-      echo -n 'Attach tmux session? [Y/n]'
+      echo -n 'Attach tmux /ession? [Y/n]'
       read YN
       [[ $YN = '' ]] && YN=y
       [[ $YN = y ]] && tmux attach
@@ -267,5 +226,7 @@ fi
 # Tmux branch
 PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
 
-# Fortune
-fortune | cowsay -f $(ls /usr/local/Cellar/cowsay/3.03/share/cows | shuf -n1)
+function _Z_precmd { z --add "$(pwd -P)" 61 }
+precmd_functions=($precmd_functions _Z_precmd)
+
+

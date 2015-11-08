@@ -5,6 +5,7 @@ if filereadable("/etc/vim/vimrc")
   source /etc/vim/vimrc
 endif
 
+color smyck
 
 "
 " Vundle
