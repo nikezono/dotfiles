@@ -1,0 +1,34 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+hook_add = '''
+  let g:lightline = { 
+  \   'colorscheme': 'jellybeans'
+  \ }
+'''
+
+[[plugins]] 
+repo = 'altercation/vim-colors-solarized'
+
+[[plugins]] 
+repo = 'rcmdnk/vim-markdown'
+on_ft = ['markdown','mkd']
+
+
+[[plugins]]
+repo = 'nathanaelkane/vim-indent-guides'
+
+[[plugins]]
+repo = 'tomtom/tcomment_vim'
+
+[[plugins]]
+repo = 'osyo-manga/vim-watchdogs'
+
+[[plugins]]
+repo = 'Shougo/unite.vim'
+
+[[plugins]]
+repo = 'Shougo/neocomplete.vim'
+
