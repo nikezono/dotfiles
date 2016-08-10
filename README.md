@@ -12,4 +12,6 @@
 
 * [prezto](https://github.com/sorin-ionescu/prezto)
 
+# old dotfiles
 
+https://github.com/nikezono/dotfiles/tree/master
