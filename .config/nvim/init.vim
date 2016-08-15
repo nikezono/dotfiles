@@ -2,6 +2,7 @@ set number
 set tabstop=2
 set softtabstop=0 noexpandtab
 set shiftwidth=2
+syntax on
 
 noremap w b
 
