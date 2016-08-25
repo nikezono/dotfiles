@@ -9,6 +9,9 @@ hook_add = '''
   \ }
 '''
 
+[[plugins]]
+repo = 'christoomey/vim-tmux-navigator'
+
 [[plugins]] 
 repo = 'altercation/vim-colors-solarized'
 

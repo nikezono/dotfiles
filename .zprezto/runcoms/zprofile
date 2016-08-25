@@ -5,6 +5,9 @@
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
 
+# Notify
+source $HOME/.zsh-background-notify/bgnotify.plugin.zsh
+
 #
 # Browser
 #
