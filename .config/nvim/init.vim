@@ -1,10 +1,11 @@
 set number
 set tabstop=2
-set softtabstop=0 noexpandtab
+set softtabstop=2 expandtab
 set shiftwidth=2
 syntax on
-
 noremap w b
+inoremap <Nul> <C-n>
+
 
 " プラグインが実際にインストールされるディレクトリ
 let s:dein_dir = expand('~/.cache/dein')
@@ -44,3 +45,26 @@ if dein#check_install()
 endif
 
 filetype plugin indent on
+
+" Settings "
+
+" Indent
+colorscheme default
+let g:indent_guides_enable_on_vim_startup=1
+let g:indent_guides_start_level=2
+let g:indent_guides_guide_size=1
+
+" Unite
+let g:unite_enable_smart_case = 1
+
+" neomake
+autocmd! BufWritePost * Neomake
+let g:neomake_cpp_enable_markers=['clang']
+let g:neomake_cpp_clang_args = ["-std=c++14", "-Wextra", "-Wall", "-fsanitize=undefined","-g"]
+
+" Complete
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources#clang#libclang_path="/usr/lib/libclang.so"
+
+" C/C++
+set cinoptions=g1

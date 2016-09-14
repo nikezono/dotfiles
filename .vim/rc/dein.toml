@@ -9,29 +9,29 @@ hook_add = '''
   \ }
 '''
 
-[[plugins]]
-repo = 'christoomey/vim-tmux-navigator'
 
-[[plugins]] 
+[[plugins]] # Color
 repo = 'altercation/vim-colors-solarized'
 
-[[plugins]] 
+[[plugins]] # Syntax
 repo = 'rcmdnk/vim-markdown'
 on_ft = ['markdown','mkd']
 
 
-[[plugins]]
+[[plugins]] # Indent
 repo = 'nathanaelkane/vim-indent-guides'
 
-[[plugins]]
+[[plugins]] # Comment
 repo = 'tomtom/tcomment_vim'
 
-[[plugins]]
-repo = 'osyo-manga/vim-watchdogs'
-
-[[plugins]]
+[[plugins]] # Filer
 repo = 'Shougo/unite.vim'
 
-[[plugins]]
-repo = 'Shougo/neocomplete.vim'
+[[plugins]] # Complete
+repo = 'Shougo/deoplete.nvim'
 
+[[plugins]] # Syntax Check
+repo = 'neomake/neomake'
+
+[[plugins]]
+repo= 'zchee/deoplete-clang'
