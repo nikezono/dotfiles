@@ -68,3 +68,4 @@ let g:deoplete#sources#clang#libclang_path="/usr/lib/libclang.so"
 
 " C/C++
 set cinoptions=g1
+autocmd FileType c,cpp ClangFormatAutoEnable

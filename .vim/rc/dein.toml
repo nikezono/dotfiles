@@ -34,4 +34,7 @@ repo = 'Shougo/deoplete.nvim'
 repo = 'neomake/neomake'
 
 [[plugins]]
-repo= 'zchee/deoplete-clang'
+repo = 'zchee/deoplete-clang'
+
+[[plugins]]
+repo = 'rhysd/vim-clang-format'
