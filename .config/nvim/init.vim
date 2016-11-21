@@ -4,6 +4,8 @@ set softtabstop=2 expandtab
 set shiftwidth=2
 syntax on
 noremap w b
+nnoremap ; :
+nnoremap : ;
 inoremap <Nul> <C-n>
 
 
@@ -24,8 +26,6 @@ endif
 if dein#load_state(s:dein_dir)
   call dein#begin(s:dein_dir)
 
-  " プラグインリストを収めた TOML ファイル
-  " 予め TOML ファイル（後述）を用意しておく
   let g:rc_dir    = expand('~/.vim/rc')
   let s:toml      = g:rc_dir . '/dein.toml'
   let s:lazy_toml = g:rc_dir . '/dein_lazy.toml'
@@ -50,7 +50,7 @@ filetype plugin indent on
 
 " Indent
 colorscheme default
-let g:indent_guides_enable_on_vim_startup=1
+" let g:indent_guides_enable_on_vim_startup=1
 let g:indent_guides_start_level=2
 let g:indent_guides_guide_size=1
 
