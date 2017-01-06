@@ -5,6 +5,7 @@
 # Please adapt and uncomment the following lines:
 [core]
 	editor = vi
+  excludesfile = ~/.gitignore_global
 [alias]
 	lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 	today = "!sh -c 'git log --reverse --no-merges --branches=* --date=local --since=midnight --oneline --author=\"`git config --get user.name`\"'"

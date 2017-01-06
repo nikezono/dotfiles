@@ -10,9 +10,6 @@ hook_add = '''
 '''
 
 
-[[plugins]] # Color
-repo = 'altercation/vim-colors-solarized'
-
 [[plugins]] # Syntax
 repo = 'rcmdnk/vim-markdown'
 on_ft = ['markdown','mkd']
@@ -38,3 +35,9 @@ repo = 'zchee/deoplete-clang'
 
 [[plugins]]
 repo = 'rhysd/vim-clang-format'
+
+[[plugins]] # Color
+repo = 'w0ng/vim-hybrid'
+
+[[plugins]] # &Tmux-Resurrect
+repo = 'tpope/vim-obsession'
