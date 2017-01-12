@@ -8,6 +8,12 @@ nnoremap ; :
 nnoremap : ;
 inoremap <Nul> <C-n>
 
+" nmap
+nmap <silent> <A-Up> :wincmd k<CR>
+nmap <silent> <A-Down> :wincmd j<CR>
+nmap <silent> <A-Left> :wincmd h<CR>
+nmap <silent> <A-Right> :wincmd l<CR>
+
 
 " プラグインが実際にインストールされるディレクトリ
 let s:dein_dir = expand('~/.cache/dein')
@@ -63,19 +69,22 @@ let g:indent_guides_guide_size=1
 let g:unite_enable_smart_case = 1
 
 " neomake
-autocmd! BufWritePost * Neomake
-let g:neomake_cpp_enable_markers=['clang']
-let g:neomake_cpp_clang_args = ["-std=c++14", "-Wextra", "-Wall", "-fsanitize=undefined","-g"]
+autocmd BufWritePost * Neomake
+let g:neomake_cpp_enable_markers = ['clang']
+let g:neomake_cpp_clang_args = ["-std=c++14", "-Wextra", "-Wall", "-fsanitize=thread","-g"]
 
 " Complete
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources = {}
+let g:deoplete#sources.hpp = ['buffer', 'clang']
 let g:deoplete#sources#clang#libclang_path="/usr/lib/libclang.so"
+let g:deoplete#sources#clang#clang_header = '/usr/include/clang'
 
 " vim-session(save session)
 let g:session_directory = xolox#misc#path#merge(getcwd(), '.vimsessions')
 let g:session_autoload = 'yes'
 let g:session_autosave = 'no'
-autocmd! BufWritePost * SaveSession
+autocmd BufWritePost * SaveSession!
 
 " C/C++
 set cinoptions=g1
