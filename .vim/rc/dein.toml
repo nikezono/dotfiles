@@ -40,4 +40,8 @@ repo = 'rhysd/vim-clang-format'
 repo = 'w0ng/vim-hybrid'
 
 [[plugins]] # &Tmux-Resurrect
-repo = 'tpope/vim-obsession'
+repo = 'xolox/vim-session'
+depends = 'xolox/vim-misc'
+
+[[plugins]] 
+repo = 'xolox/vim-misc'

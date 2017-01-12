@@ -71,8 +71,11 @@ let g:neomake_cpp_clang_args = ["-std=c++14", "-Wextra", "-Wall", "-fsanitize=un
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#clang#libclang_path="/usr/lib/libclang.so"
 
-" vim-obsession(save session)
-autocmd! BufWritePost * mksession!
+" vim-session(save session)
+let g:session_directory = xolox#misc#path#merge(getcwd(), '.vimsessions')
+let g:session_autoload = 'yes'
+let g:session_autosave = 'no'
+autocmd! BufWritePost * SaveSession
 
 " C/C++
 set cinoptions=g1
