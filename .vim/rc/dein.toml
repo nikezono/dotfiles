@@ -14,10 +14,6 @@ hook_add = '''
 repo = 'rcmdnk/vim-markdown'
 on_ft = ['markdown','mkd']
 
-
-[[plugins]] # Indent
-repo = 'nathanaelkane/vim-indent-guides'
-
 [[plugins]] # Comment
 repo = 'tomtom/tcomment_vim'
 
@@ -35,9 +31,6 @@ repo = 'zchee/deoplete-clang'
 on_ft = ['c', 'cpp', 'hpp', 'cc', 'hh', 'cmake']
 depends = 'Shougo/deoplete.nvim'
 
-[[plugins]]
-repo = 'rhysd/vim-clang-format'
-
 [[plugins]] # Color
 repo = 'w0ng/vim-hybrid'
 
@@ -47,3 +40,6 @@ depends = 'xolox/vim-misc'
 
 [[plugins]] 
 repo = 'xolox/vim-misc'
+
+[[plugins]]
+repo = 'rhysd/vim-clang-format'
