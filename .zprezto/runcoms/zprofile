@@ -5,6 +5,11 @@
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
 
+# Keys
+xset r rate 180 50
+xmodmap ~/.xmodmap
+
+
 # Notify
 source $HOME/.zsh-background-notify/bgnotify.plugin.zsh
 
@@ -16,6 +21,7 @@ if [[ "$OSTYPE" == darwin* ]]; then
   export BROWSER='open'
 	export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 fi
+
 
 #
 # Editors
