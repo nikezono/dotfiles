@@ -7,8 +7,8 @@
 
 # Keys
 xset r rate 180 50
-xmodmap ~/.xmodmap
-
+setxkbmap -option ctrl:nocaps
+xbindkeys
 
 # Notify
 source $HOME/.zsh-background-notify/bgnotify.plugin.zsh
@@ -22,6 +22,11 @@ if [[ "$OSTYPE" == darwin* ]]; then
 	export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 fi
 
+#
+# Filer
+#
+
+alias ntls='nautilus --no-desktop'
 
 #
 # Editors
