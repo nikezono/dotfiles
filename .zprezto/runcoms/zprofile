@@ -5,10 +5,15 @@
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
 
-# Keys
+# X11 Keys
 xset r rate 180 50
 setxkbmap -option ctrl:nocaps
 xbindkeys
+
+# X11 Wallpaper
+
+# feh --bg-scale /path/to/image
+
 
 # Notify
 source $HOME/.zsh-background-notify/bgnotify.plugin.zsh
