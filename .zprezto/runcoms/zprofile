@@ -24,7 +24,7 @@ source $HOME/.zsh-background-notify/bgnotify.plugin.zsh
 
 if [[ "$OSTYPE" == darwin* ]]; then
   export BROWSER='open'
-	export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
+	export PATH=$PATH:/usr/local/opt/coreutils/libexec/gnubin
 fi
 
 #
