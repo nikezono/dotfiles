@@ -6,14 +6,12 @@
 #
 
 # X11 Keys
-xset r rate 180 50
-setxkbmap -option ctrl:nocaps
-xbindkeys
-
-# X11 Wallpaper
-
-# feh --bg-scale /path/to/image
-
+if [[ "$OSTYPE" != darwin* ]]; then
+  xset r rate 180 50
+  setxkbmap -option ctrl:nocaps
+  xbindkeys
+  # feh --bg-scale /path/to/image
+fi
 
 # Notify
 source $HOME/.zsh-background-notify/bgnotify.plugin.zsh
