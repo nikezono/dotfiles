@@ -42,4 +42,14 @@ depends = 'xolox/vim-misc'
 repo = 'xolox/vim-misc'
 
 [[plugins]]
+repo = 'mxw/vim-jsx'
+
+[[plugins]]
+repo = 'pangloss/vim-javascript'
+
+[[plugins]]
 repo = 'rhysd/vim-clang-format'
+
+[[plugins]]
+repo = 'Chiel92/vim-autoformat'
+

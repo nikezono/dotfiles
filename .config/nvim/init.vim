@@ -74,6 +74,20 @@ let g:vim_markdown_folding_disabled = 1
 autocmd BufNewFile,BufRead *.page set filetype markdown
 
 " C++
-let g:clang_format#style_options = {"Standard" : "C++11"}
+let g:clang_format#style_options = {
+      \"Standard" : "C++11",
+      \"AlignAfterOpenBracket" : "true",
+      \"AlignConsecutiveAssignments" : "true",
+      \"AlignTrailingComments" : "true",
+      \"AllowShortBlocksOnASingleLine" : "true",
+      \"PointerAlignment" : "Left",
+      \"DerivePointerAlignment" : "false"
+      \}
 autocmd FileType c,cpp,objc nnoremap <Space><Space> :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <Space><Space> :ClangFormat<CR>
+
+" Javascript
+au BufRead,BufNewFile *.jsx set filetype=javascript.jsx
+autocmd FileType javascript nnoremap <Space><Space> :Autoformat<CR>
+autocmd FileType javascript vnoremap <Space><Space> :Autoformat<CR>
+
