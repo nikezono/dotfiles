@@ -7,17 +7,18 @@
 
 export GTEST_COLOR=1
 
-
-# X11 Keys
-xset r rate 180 50
-setxkbmap -option ctrl:nocaps
-xbindkeys
-
 # X11 Wallpaper
 
 # feh --bg-scale /path/to/image
-export PATH=$PATH:/opt/intel/vtune_amplifier_2018/bin64/
 
+# X11 keys
+if [[ "$OSTYPE" != darwin* ]]; then
+  xset r rate 180 50
+  setxkbmap -option ctrl:nocaps
+  xbindkeys
+  # feh --bg-scale /path/to/image
+  export PATH=$PATH:/opt/intel/vtune_amplifier_2018/bin64/
+fi
 
 # Notify
 source $HOME/.zsh-background-notify/bgnotify.plugin.zsh
