@@ -18,6 +18,7 @@ if [[ "$OSTYPE" != darwin* ]]; then
   xbindkeys
   # feh --bg-scale /path/to/image
   export PATH=$PATH:/opt/intel/vtune_amplifier_2018/bin64/
+  export PATH=$PATH:/home/nikezono/zapcc/build/bin
 fi
 
 # Notify

@@ -14,6 +14,15 @@ hook_add = '''
 repo = 'rcmdnk/vim-markdown'
 on_ft = ['markdown','mkd']
 
+[[plugins]] # Syntax
+repo = 'wannesm/wmgraphviz.vim'
+on_ft = ['dot','graph']
+
+
+[[plugins]] # Syntax
+repo = 'kchmck/vim-coffee-script'
+on_ft = ['coffee']
+
 [[plugins]] # Comment
 repo = 'tomtom/tcomment_vim'
 
